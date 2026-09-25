@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Between the Lines — Global Politics & East Asia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0D1B2A;
+  --navy-mid: #1A2E44;
+  --navy-light: #243F5C;
+  --crimson: #B22234;
+  --crimson-light: #D94454;
+  --cream: #F0EDE6;
+  --cream-dark: #E4E0D8;
+  --slate: #4A5568;
+  --slate-light: #718096;
+  --white: #FAFAF8;
+  --gold: #C9A84C;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 16px; }
+body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3', sans-serif; min-height: 100vh; }
+
+/* ── MASTHEAD ── */
+.masthead {
+  background: var(--navy);
+  border-bottom: 3px solid var(--crimson);
+  padding: 0;
+}
+.masthead-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 40px;
+  border-bottom: 0.5px solid var(--navy-light);
+}
+.masthead-date { font-size: 11px; color: var(--slate-light); letter-spacing: 0.06em; font-weight: 400; }
+.masthead-tagline { font-size: 11px; color: var(--slate-light); font-style: italic; }
+
+.masthead-main {
+  padding: 28px 40px 22px;
+  text-align: center;
+  position: relative;
+}
+.blog-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+.blog-title span { color: var(--crimson-light); font-style: italic; }
+.blog-subtitle {
+  font-size: 13px;
+  color: var(--slate-light);
+  margin-top: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 300;
+}
+.masthead-rule {
+  width: 60px;
+  height: 1px;
+  background: var(--crimson);
+  margin: 12px auto 0;
+}
+
+/* region nav */
+.region-nav {
+  background: var(--navy-mid);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.region-nav::-webkit-scrollbar { display: none; }
+.region-btn {
+  padding: 10px 18px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--slate-light);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.region-btn:hover, .region-btn.active {
+  color: var(--white);
+  border-bottom-color: var(--crimson);
+}
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  align-items: start;
+}
+@media (max-width: 800px) {
+  .layout { grid-template-columns: 1fr; padding: 20px 16px; }
+  .masthead-top, .masthead-main, .region-nav { padding-left: 20px; padding-right: 20px; }
+}
+
+/* ── SIDEBAR ── */
+.sidebar { position: sticky; top: 24px; padding-right: 32px; }
+
+/* ── SENTENCE OF THE WEEK ── */
+.sotw-box {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 6px;
+  padding: 20px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.sotw-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--gold);
+}
+.sotw-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sotw-week { font-size: 10px; color: var(--slate-light); font-style: italic; font-weight: 400; letter-spacing: 0; }
+.sotw-quote {
+  font-family: 'Playfair Display', serif;
+  font-size: 14.5px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--white);
+  line-height: 1.65;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-top: 0.5px solid var(--navy-light);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+.sotw-context {
+  font-size: 11px;
+  color: var(--slate-light);
+  margin-top: 10px;
+  padding-left: 4px;
+  line-height: 1.5;
+  border-top: 0.5px solid var(--navy-light);
+  padding-top: 8px;
+}
+.sotw-edit-btn {
+  font-size: 10px; color: var(--slate-light);
+  background: none; border: 0.5px solid var(--navy-light);
+  border-radius: 4px; padding: 2px 7px; cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  margin-top: 10px; display: block; margin-left: 4px;
+  transition: all 0.15s;
+}
+.sotw-edit-btn:hover { border-color: var(--gold); color: var(--gold); }
+.sotw-edit-form { margin-top: 10px; padding-left: 4px; display: none; }
+.sotw-edit-form.open { display: block; }
+.sotw-edit-form textarea {
+  width: 100%; font-size: 13px; border-radius: 4px;
+  border: 0.5px solid var(--navy-light); padding: 7px;
+  background: var(--navy-mid); color: var(--white);
+  font-family: 'Playfair Display', serif; font-style: italic;
+  resize: vertical; min-height: 80px; line-height: 1.5;
+}
+.sotw-edit-form input {
+  width: 100%; font-size: 11px; border-radius: 4px;
+  border: 0.5px solid var(--navy-light); padding: 5px 7px;
+  background: var(--navy-mid); color: var(--slate-light);
+  font-family: 'Source Sans 3', sans-serif; margin-top: 5px;
+}
+.sotw-save-btn {
+  font-size: 11px; padding: 4px 12px;
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 4px; cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 600; margin-top: 7px;
+}
+
+/* ── AUTHORS PAGE ── */
+.authors-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(13,27,42,0.75); z-index: 1000;
+  overflow-y: auto; padding: 40px 20px; justify-content: center;
+}
+.authors-overlay.open { display: flex; }
+.authors-panel {
+  background: var(--white); border-radius: 12px;
+  max-width: 760px; width: 100%; overflow: hidden; position: relative;
+}
+.authors-header { background: var(--navy); padding: 28px 36px; position: relative; border-bottom: 3px solid var(--crimson); }
+.authors-header h2 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--white); }
+.authors-header p { font-size: 13px; color: var(--slate-light); margin-top: 6px; }
+.authors-close { position: absolute; top: 20px; right: 24px; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--slate-light); }
+.authors-close:hover { color: var(--white); }
+.authors-body { padding: 32px 36px; }
+.author-card { display: flex; gap: 24px; align-items: flex-start; padding: 28px 0; border-bottom: 0.5px solid var(--cream-dark); }
+.author-card:last-child { border-bottom: none; padding-bottom: 0; }
+.author-avatar {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: var(--navy-mid); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; border: 3px solid var(--cream-dark); position: relative;
+}
+.author-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.author-avatar-initials { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--white); }
+.author-info { flex: 1; min-width: 0; }
+.author-name { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
+.author-role { font-size: 11px; color: var(--crimson); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 10px; }
+.author-bio { font-size: 14px; color: var(--slate); line-height: 1.7; margin-bottom: 12px; max-width: 52ch; }
+.author-focus { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.focus-tag { font-size: 11px; padding: 3px 9px; border-radius: 3px; background: var(--cream); color: var(--navy); border: 0.5px solid var(--cream-dark); font-weight: 500; }
+.author-links { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.author-link {
+  font-size: 12px; color: var(--slate); text-decoration: none;
+  display: flex; align-items: center; gap: 4px;
+  border: 0.5px solid var(--cream-dark); padding: 4px 10px;
+  border-radius: 4px; transition: all 0.15s;
+}
+.author-link:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.author-post-count { font-size: 12px; color: var(--slate-light); }
+.photo-upload-label {
+  font-size: 10px; color: var(--slate-light); cursor: pointer;
+  border: 0.5px dashed var(--cream-dark); border-radius: 4px;
+  padding: 3px 8px; display: inline-block; margin-top: 6px;
+  transition: all 0.15s;
+}
+.photo-upload-label:hover { border-color: var(--navy); color: var(--navy); }
+
+.sidebar-section { margin-bottom: 28px; }
+.sidebar-head {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--slate);
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+.region-tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.region-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--cream-dark);
+  color: var(--slate);
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 500;
+}
+.region-tag:hover, .region-tag.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+.region-tag.ea { border-color: var(--crimson); color: var(--crimson); }
+.region-tag.ea:hover, .region-tag.ea.active { background: var(--crimson); color: #fff; border-color: var(--crimson); }
+
+.recent-list { display: flex; flex-direction: column; gap: 12px; }
+.recent-item { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.recent-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cream-dark);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 24px;
+}
+.recent-title {
+  font-size: 13px;
+  color: var(--navy);
+  line-height: 1.4;
+  font-weight: 500;
+}
+.recent-title:hover { color: var(--crimson); }
+.recent-date { font-size: 11px; color: var(--slate-light); margin-top: 2px; }
+
+.about-box {
+  background: var(--white);
+  border-radius: 6px;
+  padding: 16px;
+  border: 0.5px solid var(--cream-dark);
+}
+.about-box p { font-size: 13px; color: var(--slate); line-height: 1.6; }
+.about-authors { display: flex; gap: 8px; margin-top: 12px; }
+.author-chip {
+  font-size: 11px;
+  background: var(--cream);
+  border-radius: 20px;
+  padding: 3px 10px;
+  color: var(--navy);
+  font-weight: 500;
+  border: 0.5px solid var(--cream-dark);
+}
+
+/* ── MAIN FEED ── */
+.main { min-width: 0; }
+
+.feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.feed-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 0.04em;
+}
+.feed-count { font-size: 12px; color: var(--slate-light); }
+
+/* post card */
+.post-card {
+  background: var(--white);
+  border-radius: 8px;
+  border: 0.5px solid var(--cream-dark);
+  margin-bottom: 20px;
+  overflow: hidden;
+  transition: box-shadow 0.15s;
+}
+.post-card:hover { box-shadow: 0 4px 20px rgba(13,27,42,0.08); }
+
+.post-card.featured {
+  border-left: 4px solid var(--crimson);
+}
+
+.post-card-body { padding: 24px 28px; }
+
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.post-region {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  padding: 3px 9px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.region-usa { background: #EBF0FB; color: #2B4EAA; }
+.region-eastasia { background: #FBF0EB; color: #B22234; }
+.region-europe { background: #EBFBF0; color: #1A6B3C; }
+.region-global { background: #F5EBFB; color: #6B2D9A; }
+.region-korea { background: #FBF5EB; color: #8B5E10; }
+.region-china { background: #FBEBEB; color: #991A1A; }
+.region-japan { background: #EBEBFB; color: #2D2D9A; }
+
+.post-date { font-size: 11px; color: var(--slate-light); }
+.post-read { font-size: 11px; color: var(--slate-light); }
+.post-dot { color: var(--cream-dark); font-size: 10px; }
+
+.post-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.post-title:hover { color: var(--crimson); }
+.post-title.featured-title { font-size: 26px; }
+
+.post-excerpt {
+  font-size: 15px;
+  color: var(--slate);
+  line-height: 1.7;
+  margin-bottom: 16px;
+  max-width: 65ch;
+}
+
+.post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 0.5px solid var(--cream-dark);
+}
+.post-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.post-tag {
+  font-size: 11px;
+  color: var(--slate);
+  background: var(--cream);
+  padding: 3px 9px;
+  border-radius: 3px;
+  border: 0.5px solid var(--cream-dark);
+}
+.post-actions { display: flex; gap: 8px; align-items: center; }
+.read-more {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--crimson);
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: 'Source Sans 3', sans-serif;
+  padding: 0;
+  transition: color 0.15s;
+}
+.read-more:hover { color: var(--crimson-light); }
+
+/* references toggle */
+.ref-toggle {
+  font-size: 12px;
+  color: var(--slate-light);
+  cursor: pointer;
+  background: none;
+  border: 0.5px solid var(--cream-dark);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ref-toggle:hover { background: var(--cream); color: var(--navy); }
+.ref-panel {
+  background: var(--cream);
+  border-top: 0.5px solid var(--cream-dark);
+  padding: 16px 28px;
+  display: none;
+}
+.ref-panel.open { display: block; }
+.ref-panel h4 { font-size: 11px; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 10px; font-weight: 600; }
+.ref-list { display: flex; flex-direction: column; gap: 8px; }
+.ref-item { font-size: 12px; color: var(--slate); line-height: 1.5; }
+.ref-item a { color: var(--crimson); text-decoration: none; }
+.ref-item a:hover { text-decoration: underline; }
+
+/* full post overlay */
+.post-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,27,42,0.7);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+.post-overlay.open { display: flex; justify-content: center; }
+.post-full {
+  background: var(--white);
+  border-radius: 10px;
+  max-width: 720px;
+  width: 100%;
+  padding: 48px;
+  position: relative;
+}
+.post-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none; border: none;
+  font-size: 22px; cursor: pointer;
+  color: var(--slate-light);
+  line-height: 1;
+}
+.post-close:hover { color: var(--navy); }
+.post-full-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+  margin-bottom: 16px;
+}
+.post-full-body {
+  font-size: 16px;
+  color: var(--slate);
+  line-height: 1.8;
+  max-width: 62ch;
+}
+.post-full-body p { margin-bottom: 18px; }
+.post-full-refs {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--cream-dark);
+}
+.post-full-refs h4 { font-size: 12px; letter-spacing: 0.08em; color: var(--slate); margin-bottom: 12px; font-weight: 600; }
+
+/* ── FOOTER ── */
+.site-footer {
+  background: var(--navy);
+  color: var(--slate-light);
+  text-align: center;
+  padding: 28px 40px;
+  font-size: 12px;
+  margin-top: 48px;
+  border-top: 3px solid var(--crimson);
+}
+.site-footer strong { color: var(--white); }
+
+/* search bar */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.search-input {
+  flex: 1;
+  font-size: 13px;
+  border: 0.5px solid var(--cream-dark);
+  border-radius: 6px;
+  padding: 9px 14px;
+  background: var(--white);
+  color: var(--navy);
+  font-family: 'Source Sans 3', sans-serif;
+}
+.search-input:focus { outline: none; border-color: var(--navy); }
+.search-btn {
+  padding: 9px 16px;
+  background: var(--navy);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  font-weight: 500;
+}
+
+/* new post form */
+.new-post-btn {
+  width: 100%;
+  padding: 11px;
+  background: var(--crimson);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Source Sans 3', sans-serif;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.new-post-btn:hover { background: var(--crimson-light); }
+
+.new-post-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(13,27,42,0.7);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.new-post-modal.open { display: flex; }
+.new-post-form {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 36px;
+  max-width: 640px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.new-post-form h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: var(--navy);
+}
+.form-field { margin-bottom: 14px; }
+.form-field label { display: block; font-size: 11px; font-weight: 600; color: var(--slate); margin-bottom: 5px; letter-spacing: 0.06em; }
+.form-field input, .form-field select, .form-field textarea {
+  width: 100%;
+  font-size: 14px;
+  border: 0.5px solid var(--cream-dark);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: var(--white);
+  color: var(--navy);
+  font-family: 'Source Sans 3', sans-serif;
+}
+.form-field textarea { min-height: 120px; resize: vertical; line-height: 1.6; }
+.form-field input:focus, .form-field select:focus, .form-field textarea:focus { outline: none; border-color: var(--navy); }
+.form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+.btn-cancel { padding: 9px 18px; border: 0.5px solid var(--cream-dark); border-radius: 6px; background: transparent; cursor: pointer; font-size: 13px; font-family: 'Source Sans 3', sans-serif; color: var(--slate); }
+.btn-publish { padding: 9px 20px; background: var(--navy); color: #fff; border: none; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Source Sans 3', sans-serif; }
+.btn-draft { padding: 9px 20px; background: transparent; color: var(--navy); border: 0.5px solid var(--navy); border-radius: 6px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Source Sans 3', sans-serif; }
+
+.no-posts { text-align: center; padding: 48px 20px; color: var(--slate-light); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span class="masthead-date" id="live-date"></span>
+    <span class="masthead-tagline">Politics without borders · East Asia &amp; beyond</span>
+  </div>
+  <div class="masthead-main">
+    <h1 class="blog-title">Between <span>the Lines</span></h1>
+    <p class="blog-subtitle">Global Politics · East Asia · Power &amp; Policy</p>
+    <div class="masthead-rule"></div>
+  </div>
+  <nav class="region-nav">
+    <button class="region-btn active" onclick="filterRegion('all',this)">All</button>
+    <button class="region-btn" onclick="filterRegion('East Asia',this)">East Asia</button>
+    <button class="region-btn" onclick="filterRegion('Korea',this)">Korea</button>
+    <button class="region-btn" onclick="filterRegion('China',this)">China</button>
+    <button class="region-btn" onclick="filterRegion('Japan',this)">Japan</button>
+    <button class="region-btn" onclick="filterRegion('USA',this)">USA</button>
+    <button class="region-btn" onclick="filterRegion('Europe',this)">Europe</button>
+    <button class="region-btn" onclick="filterRegion('Global',this)">Global</button>
+  </nav>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <button class="new-post-btn" onclick="openNewPost()">
+      ✦ Write new post
+    </button>
+
+    <!-- Sentence of the Week -->
+    <div class="sotw-box">
+      <div class="sotw-label">
+        <span>Sentence of the Week</span>
+        <span class="sotw-week" id="sotw-week-label"></span>
+      </div>
+      <div class="sotw-quote" id="sotw-quote"></div>
+      <div class="sotw-context" id="sotw-context"></div>
+      <button class="sotw-edit-btn" onclick="toggleSotwEdit()">✎ Update this week's sentence</button>
+      <div class="sotw-edit-form" id="sotw-edit-form">
+        <textarea id="sotw-input" placeholder="Write the sentence of the week…"></textarea>
+        <input type="text" id="sotw-context-input" placeholder="One-line context (optional)…">
+        <button class="sotw-save-btn" onclick="saveSotw()">Save</button>
+      </div>
+    </div>
+
+    <!-- Authors link -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">The Authors</div>
+      <button onclick="openAuthors()" style="width:100%;padding:9px;background:var(--navy);color:var(--white);border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Source Sans 3',sans-serif;display:flex;align-items:center;justify-content:center;gap:7px;transition:background 0.15s" onmouseover="this.style.background='var(--navy-light)'" onmouseout="this.style.background='var(--navy)'">
+        <span>👤</span> Meet the authors →
+      </button>
+    </div>
+
+    <!-- Regions -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Browse by Region</div>
+      <div class="region-tag-list">
+        <button class="region-tag active" onclick="filterRegion('all',this)">All</button>
+        <button class="region-tag ea" onclick="filterRegion('East Asia',this)">East Asia</button>
+        <button class="region-tag" onclick="filterRegion('Korea',this)">Korea</button>
+        <button class="region-tag" onclick="filterRegion('China',this)">China</button>
+        <button class="region-tag" onclick="filterRegion('Japan',this)">Japan</button>
+        <button class="region-tag" onclick="filterRegion('USA',this)">USA</button>
+        <button class="region-tag" onclick="filterRegion('Europe',this)">Europe</button>
+        <button class="region-tag" onclick="filterRegion('Global',this)">Global</button>
+      </div>
+    </div>
+
+    <!-- Recent Posts -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">Recent Posts</div>
+      <div class="recent-list" id="recent-list"></div>
+    </div>
+
+    <!-- About -->
+    <div class="sidebar-section">
+      <div class="sidebar-head">About</div>
+      <div class="about-box">
+        <p>A father-and-son blog tracking political developments across the United States and East Asia — from Seoul to Washington, Beijing to Brussels.</p>
+        <div class="about-authors">
+          <span class="author-chip">Sewoong</span>
+          <span class="author-chip">Your Son</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- MAIN FEED -->
+  <main class="main">
+    <div class="search-bar">
+      <input type="text" class="search-input" id="search-input" placeholder="Search posts…" oninput="searchPosts()">
+      <button class="search-btn" onclick="searchPosts()">Search</button>
+    </div>
+    <div class="feed-header">
+      <span class="feed-title" id="feed-label">Latest Posts</span>
+      <span class="feed-count" id="feed-count"></span>
+    </div>
+    <div id="post-feed"></div>
+  </main>
+
+</div>
+
+<!-- FULL POST OVERLAY -->
+<div class="post-overlay" id="post-overlay" onclick="closeOverlay(event)">
+  <div class="post-full" id="post-full-content"></div>
+</div>
+
+<!-- NEW POST MODAL -->
+<div class="new-post-modal" id="new-post-modal">
+  <div class="new-post-form">
+    <h2>Write a new post</h2>
+    <div class="form-field">
+      <label>Title</label>
+      <input type="text" id="np-title" placeholder="Give your post a compelling title…">
+    </div>
+    <div class="form-field">
+      <label>Region</label>
+      <select id="np-region">
+        <option value="East Asia">East Asia</option>
+        <option value="Korea">Korea</option>
+        <option value="China">China</option>
+        <option value="Japan">Japan</option>
+        <option value="USA">USA</option>
+        <option value="Europe">Europe</option>
+        <option value="Global">Global</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Author</label>
+      <select id="np-author">
+        <option value="Sewoong">Sewoong</option>
+        <option value="Your Son">Your Son</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label>Tags (comma separated)</label>
+      <input type="text" id="np-tags" placeholder="e.g. diplomacy, trade, elections">
+    </div>
+    <div class="form-field">
+      <label>Excerpt / Summary</label>
+      <textarea id="np-excerpt" placeholder="Write a short summary (2–3 sentences) that appears on the feed…"></textarea>
+    </div>
+    <div class="form-field">
+      <label>Full Post Body</label>
+      <textarea id="np-body" style="min-height:200px" placeholder="Write the full post here…"></textarea>
+    </div>
+    <div class="form-field">
+      <label>References & Links (one per line, format: Title | URL)</label>
+      <textarea id="np-refs" style="min-height:80px" placeholder="e.g. The Economist | https://economist.com/article&#10;BBC News | https://bbc.com/news/article"></textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeNewPost()">Cancel</button>
+      <button class="btn-draft" onclick="savePost('draft')">Save draft</button>
+      <button class="btn-publish" onclick="savePost('published')">Publish</button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTHORS OVERLAY -->
+<div class="authors-overlay" id="authors-overlay" onclick="closeAuthorsOverlay(event)">
+  <div class="authors-panel">
+    <div class="authors-header">
+      <h2>The Authors</h2>
+      <p>Two perspectives. One blog. Politics without borders.</p>
+      <button class="authors-close" onclick="closeAuthors()">✕</button>
+    </div>
+    <div class="authors-body" id="authors-body"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <strong>Between the Lines</strong> · Global Politics &amp; East Asia · Private blog by Sewoong &amp; family · <span id="footer-year"></span>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'btl_posts_v1';
+const WOD_KEY     = 'btl_wod_v1';
+
+const SAMPLE_POSTS = [
+  {
+    id: 'p1',
+    title: 'The New Geopolitics of the Korean Peninsula',
+    region: 'Korea',
+    author: 'Sewoong',
+    date: '2026-09-24',
+    tags: ['Korea', 'diplomacy', 'North Korea', 'US-ROK alliance'],
+    excerpt: 'Seventy years after the armistice, the Korean Peninsula remains one of the most militarized and diplomatically complex zones on earth. Recent shifts in U.S. foreign policy posture are forcing Seoul to recalibrate its alliances in ways that would have seemed unthinkable a decade ago.',
+    body: `Seventy years after the armistice, the Korean Peninsula remains one of the most militarized and diplomatically complex zones on earth. Recent shifts in U.S. foreign policy posture are forcing Seoul to recalibrate its alliances in ways that would have seemed unthinkable a decade ago.\n\nSouth Korea now finds itself navigating simultaneously the demands of its security alliance with the United States, its deep economic interdependence with China, and the persistent threat posed by the North. The triangular pressure is not new — but its intensity has sharpened considerably since 2024.\n\nWhat has changed is the credibility gap. South Korean policymakers increasingly wonder whether the American extended deterrent is as reliable as it once appeared. The domestic politics of the United States — its inward turn, its skepticism of multilateral commitments — have opened space for South Korean voices to advocate for an independent nuclear deterrent. That conversation, once confined to fringe nationalist circles, now reaches the floors of the National Assembly.\n\nNone of this means the alliance is broken. But it does mean the alliance is being renegotiated, quietly and in real time, in ways that will shape the security architecture of Northeast Asia for a generation.`,
+    refs: [
+      {title: 'Council on Foreign Relations — Korea Policy', url: 'https://www.cfr.org/korea'},
+      {title: 'The Diplomat — Korean Peninsula Coverage', url: 'https://thediplomat.com/category/korean-peninsula/'},
+      {title: '38 North — DPRK Analysis', url: 'https://www.38north.org'}
+    ],
+    status: 'published',
+    featured: true
+  },
+  {
+    id: 'p2',
+    title: 'America First, Asia Second? What Trump\'s Return Means for the Pacific',
+    region: 'USA',
+    author: 'Sewoong',
+    date: '2026-09-23',
+    tags: ['USA', 'foreign policy', 'Asia-Pacific', 'alliances'],
+    excerpt: 'The return of transactional foreign policy thinking to Washington is reshaping how Asian allies calculate their strategic futures. From Tokyo to Manila, governments that once assumed American commitment is asking harder questions.',
+    body: `The return of transactional foreign policy thinking to Washington is reshaping how Asian allies calculate their strategic futures. From Tokyo to Manila, governments that once assumed American commitment is now asking harder questions about what guarantees are actually worth.\n\nFor decades, the architecture of American engagement in the Pacific rested on a set of assumptions: that the United States would underwrite regional security, that alliances carried obligations beyond pure transactional benefit, and that American power would remain the ordering force of the Indo-Pacific. Those assumptions are now being stress-tested.\n\nJapan has responded by dramatically accelerating its own rearmament — the most significant shift in Japanese defense policy since the postwar constitution was written. The Philippines has quietly expanded American military basing access. Australia has deepened the AUKUS submarine partnership.\n\nBut these responses also carry their own risks. An Asia that arms itself more heavily in response to American uncertainty is an Asia that is simultaneously more capable of independent action and more prone to miscalculation. The stability that American power once underwritten — imperfectly, at significant cost — may be harder to replicate by other means.`,
+    refs: [
+      {title: 'Foreign Affairs — The Future of American Alliances', url: 'https://www.foreignaffairs.com'},
+      {title: 'RAND Corporation — Indo-Pacific Security', url: 'https://www.rand.org/topics/indo-pacific-security.html'}
+    ],
+    status: 'published',
+    featured: false
+  },
+  {
+    id: 'p3',
+    title: 'China\'s Economic Slowdown and What It Means for Regional Power',
+    region: 'China',
+    author: 'Sewoong',
+    date: '2026-09-22',
+    tags: ['China', 'economy', 'Xi Jinping', 'regional power'],
+    excerpt: 'For three decades, China\'s economic growth was the central fact of Asian geopolitics. Now, as that growth slows and structural challenges mount, the political implications are beginning to ripple outward — from domestic legitimacy to regional assertiveness.',
+    body: `For three decades, China's economic growth was the central fact of Asian geopolitics. Now, as that growth slows and structural challenges mount, the political implications are beginning to ripple outward — from domestic legitimacy to regional assertiveness.\n\nThe property sector crisis, youth unemployment rates above 20 percent, and declining consumer confidence have confronted the Chinese Communist Party with an uncomfortable reality: the implicit bargain of prosperity in exchange for political compliance may be harder to sustain.\n\nHow authoritarian governments respond to economic stress is a question with a long and uneven historical record. Some liberalize, seeking to distribute political legitimacy more broadly. Others double down on nationalism, finding external adversaries to explain domestic difficulties. China's leadership has shown little appetite for the former and considerable capacity for the latter.\n\nFor neighboring states, a slowing China is not necessarily a less assertive China. The political incentives of a government under domestic pressure may push precisely toward the kind of external assertion — in the South China Sea, toward Taiwan, along the Himalayan border — that generates nationalist support at home.`,
+    refs: [
+      {title: 'The Economist — China Economy', url: 'https://www.economist.com/china'},
+      {title: 'Brookings Institution — China Research', url: 'https://www.brookings.edu/topic/china/'},
+      {title: 'ChinaFile', url: 'https://www.chinafile.com'}
+    ],
+    status: 'published',
+    featured: false
+  }
+];
+
+const WORDS_OF_DAY = [
+  { word: 'Geopolitics', origin: 'Greek: gē (earth) + politics', def: 'The influence of geographic factors — territory, resources, location — on a state\'s political power and international relations.', example: '"The geopolitics of the South China Sea continue to shape U.S.–China competition."' },
+  { word: 'Détente', origin: 'French: relaxation', def: 'The easing of hostility or strained relations between countries through diplomacy and negotiation.', example: '"Nixon\'s détente with China in 1972 reshaped Cold War geopolitics overnight."' },
+  { word: 'Hegemony', origin: 'Greek: hēgemonia (leadership)', def: 'The political, economic, or cultural dominance of one country or group over others.', example: '"U.S. hegemony in the Pacific has been the defining feature of Asian security since 1945."' },
+  { word: 'Realpolitik', origin: 'German: real (practical) + Politik (politics)', def: 'Foreign policy based on practical considerations and power dynamics rather than ideological or moral premises.', example: '"Bismarck\'s realpolitik redrew the map of Europe through calculated alliance and war."' },
+  { word: 'Multilateralism', origin: 'Latin: multi (many) + latus (side)', def: 'The practice of coordinating policy among three or more countries, often through international institutions.', example: '"The decline of multilateralism has left global governance institutions struggling for relevance."' },
+  { word: 'Soft Power', origin: 'Coined by Joseph Nye, 1990', def: 'A country\'s ability to influence others through attraction and persuasion — culture, values, and diplomacy — rather than coercion.', example: '"South Korea\'s soft power, through K-pop and cinema, has reshaped perceptions of Asia globally."' },
+  { word: 'Bandwagoning', origin: 'International Relations theory', def: 'A state\'s strategy of aligning with a stronger power rather than balancing against it, to gain security or advantage.', example: '"Smaller Southeast Asian states face pressure to choose between bandwagoning with China or balancing with the U.S."' },
+];
+
+// ── SENTENCE OF THE WEEK ──────────────────────────────────────────────
+const SOTW_KEY = 'btl_sotw_v1';
+
+const DEFAULT_SENTENCES = [
+  { quote: "World leaders gathered to discuss climate change. The planet, not invited, took notes.", context: "Week of Sept 22 — UN General Assembly opens in New York." },
+  { quote: "The summit produced a joint statement. Translators worked overtime. Nothing changed.", context: "On the limits of diplomatic communiqués." },
+  { quote: "History doesn't repeat itself, but in East Asia this week, it was clearly rehearsing.", context: "Tensions in the Taiwan Strait reach a new high." },
+  { quote: "Democracy is on the ballot again. It always is.", context: "Election season opens across three continents." },
+  { quote: "The sanctions were called historic. The country being sanctioned called them inconvenient.", context: "G7 announces new measures; effectiveness remains debated." },
+  { quote: "Peace talks resumed. Both sides called them productive. Neither side agreed on what was produced.", context: "On the art of the diplomatic non-breakthrough." },
+  { quote: "The G7 issued a strongly worded statement. Somewhere, an autocrat laughed.", context: "On the gap between declarations and consequences in multilateral diplomacy." },
+];
+
+function getWeekNumber(d){
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(),0,1));
+  return Math.ceil((((date - yearStart) / 86400000) + 1)/7);
+}
+
+function renderSotw(){
+  const stored = JSON.parse(localStorage.getItem(SOTW_KEY) || 'null');
+  const weekNum = getWeekNumber(new Date());
+  const weekYear = new Date().getFullYear();
+  const weekLabel = 'Week ' + weekNum + ', ' + weekYear;
+  document.getElementById('sotw-week-label').textContent = weekLabel;
+
+  let sotw;
+  if(stored && stored.weekNum === weekNum && stored.weekYear === weekYear){
+    sotw = stored;
+  } else {
+    // rotate through defaults by week number
+    sotw = DEFAULT_SENTENCES[(weekNum - 1) % DEFAULT_SENTENCES.length];
+  }
+  document.getElementById('sotw-quote').textContent = '\u201C' + sotw.quote + '\u201D';
+  document.getElementById('sotw-context').textContent = sotw.context || '';
+  if(document.getElementById('sotw-input')) document.getElementById('sotw-input').value = sotw.quote;
+  if(document.getElementById('sotw-context-input')) document.getElementById('sotw-context-input').value = sotw.context||'';
+}
+
+function toggleSotwEdit(){
+  document.getElementById('sotw-edit-form').classList.toggle('open');
+}
+
+function saveSotw(){
+  const quote = document.getElementById('sotw-input').value.trim();
+  const context = document.getElementById('sotw-context-input').value.trim();
+  if(!quote) return;
+  const weekNum = getWeekNumber(new Date());
+  const weekYear = new Date().getFullYear();
+  localStorage.setItem(SOTW_KEY, JSON.stringify({quote, context, weekNum, weekYear}));
+  document.getElementById('sotw-edit-form').classList.remove('open');
+  renderSotw();
+}
+
+// ── AUTHORS ───────────────────────────────────────────────────────────
+const AUTHORS_KEY = 'btl_authors_v1';
+
+const DEFAULT_AUTHORS = [
+  {
+    id: 'a1',
+    name: 'Se Woong Lee',
+    initials: 'SL',
+    role: 'Co-founder · Education Policy & Politics',
+    bio: 'Associate Professor of Education Policy and Leadership at SMU\'s Simmons School of Education. Researcher, policy analyst, and lifelong observer of the intersections between politics, power, and public institutions — in the United States and across East Asia.',
+    focus: ['East Asia', 'U.S. Politics', 'Education Policy', 'Korea'],
+    links: [
+      {label: 'Faculty Page', url: 'https://www.smu.edu/simmons'},
+      {label: 'LinkedIn', url: 'https://linkedin.com'},
+    ],
+    photo: null
+  },
+  {
+    id: 'a2',
+    name: 'Your Son',
+    initials: 'YS',
+    role: 'Co-founder · International Affairs',
+    bio: 'Political science graduate and aspiring diplomat with a focus on U.S. foreign policy and East Asian geopolitics. Bringing a next-generation lens to the political questions that will define the coming decades.',
+    focus: ['Foreign Policy', 'Diplomacy', 'East Asia', 'U.S. Politics'],
+    links: [
+      {label: 'LinkedIn', url: 'https://linkedin.com'},
+    ],
+    photo: null
+  }
+];
+
+function loadAuthors(){
+  return JSON.parse(localStorage.getItem(AUTHORS_KEY) || 'null') || DEFAULT_AUTHORS;
+}
+
+function openAuthors(){
+  const authors = loadAuthors();
+  const postCounts = {};
+  posts.filter(p=>p.status==='published').forEach(p=>{ postCounts[p.author] = (postCounts[p.author]||0)+1; });
+
+  document.getElementById('authors-body').innerHTML = authors.map(a => {
+    const count = postCounts[a.name] || 0;
+    const avatarHtml = a.photo
+      ? `<img src="${a.photo}" alt="${a.name}">`
+      : `<div class="author-avatar-initials">${a.initials}</div>`;
+    const linksHtml = (a.links||[]).map(l =>
+      `<a class="author-link" href="${l.url}" target="_blank" rel="noopener">↗ ${l.label}</a>`
+    ).join('');
+    return `<div class="author-card">
+      <div class="author-avatar">
+        ${avatarHtml}
+      </div>
+      <div class="author-info">
+        <div class="author-name">${a.name}</div>
+        <div class="author-role">${a.role}</div>
+        <div class="author-bio">${a.bio}</div>
+        <div class="author-focus">${(a.focus||[]).map(f=>`<span class="focus-tag">${f}</span>`).join('')}</div>
+        <div class="author-links">
+          ${linksHtml}
+          <span class="author-post-count">${count} post${count!==1?'s':''}</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('authors-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthors(){
+  document.getElementById('authors-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeAuthorsOverlay(e){
+  if(e.target.id==='authors-overlay') closeAuthors();
+}
+let posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+if(!posts){
+  posts = SAMPLE_POSTS;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+}
+
+let currentFilter = 'all';
+let currentSearch = '';
+
+// date
+const now = new Date();
+document.getElementById('live-date').textContent = now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+document.getElementById('footer-year').textContent = now.getFullYear();
+
+// word of day — rotate by day of year
+const dayOfYear = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000);
+
+// sentence of the week
+renderSotw();
+
+// ── RENDER ────────────────────────────────────────────────────────────
+function regionClass(r){
+  const map = {'USA':'usa','East Asia':'eastasia','Europe':'europe','Global':'global','Korea':'korea','China':'china','Japan':'japan'};
+  return 'region-' + (map[r]||'global');
+}
+
+function fmtDate(d){
+  return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+}
+
+function readTime(text){
+  const words = (text||'').split(/\s+/).length;
+  return Math.max(1, Math.round(words/200)) + ' min read';
+}
+
+function renderFeed(){
+  const feed = document.getElementById('post-feed');
+  let visible = posts.filter(p => p.status === 'published');
+  if(currentFilter !== 'all') visible = visible.filter(p => p.region === currentFilter);
+  if(currentSearch) visible = visible.filter(p =>
+    p.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+    p.excerpt.toLowerCase().includes(currentSearch.toLowerCase()) ||
+    (p.tags||[]).some(t => t.toLowerCase().includes(currentSearch.toLowerCase()))
+  );
+  visible.sort((a,b) => b.date.localeCompare(a.date));
+
+  document.getElementById('feed-count').textContent = visible.length + ' post' + (visible.length!==1?'s':'');
+
+  if(!visible.length){
+    feed.innerHTML = '<div class="no-posts">No posts found. <button onclick="openNewPost()" style="color:var(--crimson);background:none;border:none;cursor:pointer;font-size:15px;font-family:inherit">Write the first one →</button></div>';
+    return;
+  }
+
+  feed.innerHTML = visible.map((p,i) => {
+    const refHtml = (p.refs||[]).length ? `
+      <div class="ref-panel" id="ref-${p.id}">
+        <h4>References &amp; Further Reading</h4>
+        <div class="ref-list">
+          ${p.refs.map(r=>`<div class="ref-item">→ <a href="${r.url}" target="_blank" rel="noopener">${r.title}</a></div>`).join('')}
+        </div>
+      </div>` : '';
+
+    return `<article class="post-card ${p.featured&&i===0?'featured':''}">
+      <div class="post-card-body">
+        <div class="post-meta">
+          <span class="post-region ${regionClass(p.region)}">${p.region}</span>
+          <span class="post-dot">·</span>
+          <span class="post-date">${fmtDate(p.date)}</span>
+          <span class="post-dot">·</span>
+          <span class="post-read">${readTime(p.body)}</span>
+          <span class="post-dot">·</span>
+          <span class="post-date" style="color:var(--slate)">${p.author}</span>
+        </div>
+        <div class="post-title ${p.featured&&i===0?'featured-title':''}" onclick="openPost('${p.id}')">${p.title}</div>
+        <p class="post-excerpt">${p.excerpt}</p>
+        <div class="post-footer">
+          <div class="post-tags">${(p.tags||[]).slice(0,4).map(t=>`<span class="post-tag">${t}</span>`).join('')}</div>
+          <div class="post-actions">
+            ${(p.refs||[]).length ? `<button class="ref-toggle" onclick="toggleRefs('${p.id}')">📎 Sources (${p.refs.length})</button>` : ''}
+            <button class="read-more" onclick="openPost('${p.id}')">Read more →</button>
+          </div>
+        </div>
+      </div>
+      ${refHtml}
+    </article>`;
+  }).join('');
+
+  renderRecent(visible);
+}
+
+function renderRecent(visible){
+  const el = document.getElementById('recent-list');
+  const items = visible.slice(0,5);
+  el.innerHTML = items.map((p,i) => `
+    <div class="recent-item" onclick="openPost('${p.id}')">
+      <div class="recent-num">${String(i+1).padStart(2,'0')}</div>
+      <div>
+        <div class="recent-title">${p.title}</div>
+        <div class="recent-date">${fmtDate(p.date)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleRefs(id){
+  const panel = document.getElementById('ref-'+id);
+  if(panel) panel.classList.toggle('open');
+}
+
+function openPost(id){
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  const refsHtml = (p.refs||[]).length ? `
+    <div class="post-full-refs">
+      <h4>References &amp; Further Reading</h4>
+      <div class="ref-list">
+        ${p.refs.map(r=>`<div class="ref-item">→ <a href="${r.url}" target="_blank" rel="noopener">${r.title}</a></div>`).join('')}
+      </div>
+    </div>` : '';
+
+  document.getElementById('post-full-content').innerHTML = `
+    <button class="post-close" onclick="document.getElementById('post-overlay').classList.remove('open')">✕</button>
+    <div class="post-meta" style="margin-bottom:16px">
+      <span class="post-region ${regionClass(p.region)}">${p.region}</span>
+      &nbsp;·&nbsp; <span class="post-date">${fmtDate(p.date)}</span>
+      &nbsp;·&nbsp; <span class="post-read">${readTime(p.body)}</span>
+      &nbsp;·&nbsp; <span style="font-size:12px;color:var(--slate)">${p.author}</span>
+    </div>
+    <div class="post-full-title">${p.title}</div>
+    <div class="post-full-body">${p.body.split('\n\n').map(para=>`<p>${para}</p>`).join('')}</div>
+    ${refsHtml}`;
+  document.getElementById('post-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOverlay(e){
+  if(e.target.id==='post-overlay'){
+    document.getElementById('post-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function filterRegion(region, el){
+  currentFilter = region;
+  document.querySelectorAll('.region-btn, .region-tag').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.region-btn, .region-tag').forEach(b=>{
+    if(b.textContent.trim()===(region==='all'?'All':region)) b.classList.add('active');
+  });
+  document.getElementById('feed-label').textContent = region==='all' ? 'Latest Posts' : region + ' — Posts';
+  renderFeed();
+}
+
+function searchPosts(){
+  currentSearch = document.getElementById('search-input').value;
+  renderFeed();
+}
+
+// ── NEW POST ──────────────────────────────────────────────────────────
+function openNewPost(){
+  document.getElementById('new-post-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeNewPost(){
+  document.getElementById('new-post-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function savePost(status){
+  const title   = document.getElementById('np-title').value.trim();
+  const region  = document.getElementById('np-region').value;
+  const author  = document.getElementById('np-author').value;
+  const tags    = document.getElementById('np-tags').value.split(',').map(t=>t.trim()).filter(Boolean);
+  const excerpt = document.getElementById('np-excerpt').value.trim();
+  const body    = document.getElementById('np-body').value.trim();
+  const refsRaw = document.getElementById('np-refs').value.trim();
+
+  if(!title || !excerpt){ alert('Please add a title and summary.'); return; }
+
+  const refs = refsRaw.split('\n').map(line=>{
+    const parts = line.split('|'); 
+    return parts.length>=2 ? {title:parts[0].trim(), url:parts[1].trim()} : null;
+  }).filter(Boolean);
+
+  const post = {
+    id: 'p' + Date.now(),
+    title, region, author, tags, excerpt, body,
+    refs, status,
+    date: new Date().toISOString().slice(0,10),
+    featured: false
+  };
+
+  posts.unshift(post);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+
+  ['np-title','np-tags','np-excerpt','np-body','np-refs'].forEach(id=>document.getElementById(id).value='');
+  closeNewPost();
+  renderFeed();
+
+  if(status==='published') openPost(post.id);
+}
+
+// close modals on escape
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){
+    document.getElementById('post-overlay').classList.remove('open');
+    document.getElementById('new-post-modal').classList.remove('open');
+    document.getElementById('authors-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
+renderFeed();
+</script>
+
+</body>
+</html>
