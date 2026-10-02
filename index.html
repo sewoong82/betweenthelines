@@ -22,8 +22,15 @@
   --gold: #C9A84C;
 }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 16px; }
-body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3', sans-serif; min-height: 100vh; }
+html { font-size: 16px; height: 100%; }
+body {
+  background: var(--cream);
+  color: var(--navy);
+  font-family: 'Source Sans 3', sans-serif;
+  min-height: 100vh;
+  height: 100%;
+  overflow-y: scroll; /* always show scrollbar to prevent layout shift */
+}
 
 /* ── MASTHEAD ── */
 .masthead {
@@ -109,6 +116,15 @@ body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3
   margin: 0 auto;
   padding: 32px 24px;
   align-items: start;
+  min-height: calc(100vh - 200px);
+}
+/* main feed white background card */
+.main {
+  background: var(--white);
+  border-radius: 10px;
+  border: 0.5px solid var(--cream-dark);
+  padding: 24px;
+  min-height: 600px;
 }
 @media (max-width: 800px) {
   .layout { grid-template-columns: 1fr; padding: 20px 16px; }
@@ -116,7 +132,20 @@ body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3
 }
 
 /* ── SIDEBAR ── */
-.sidebar { position: sticky; top: 24px; padding-right: 32px; }
+.sidebar {
+  position: sticky;
+  top: 24px;
+  padding-right: 32px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--cream-dark) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--cream-dark); border-radius: 4px; }
+.sidebar::-webkit-scrollbar-thumb:hover { background: var(--slate-light); }
 
 /* ── SENTENCE OF THE WEEK ── */
 .sotw-box {
@@ -1189,6 +1218,7 @@ function renderFeed(){
           <div class="post-actions">
             ${(p.refs||[]).length ? `<button class="ref-toggle" onclick="toggleRefs('${p.id}')">📎 Sources (${p.refs.length})</button>` : ''}
             <button class="read-more" onclick="openPost('${p.id}')">Read more →</button>
+            <button onclick="editPost('${p.id}')" style="font-size:11px;padding:4px 9px;border-radius:4px;border:0.5px solid #D0CEC9;background:transparent;cursor:pointer;color:var(--slate);font-family:'Source Sans 3',sans-serif;transition:all 0.15s" onmouseover="this.style.background='var(--cream)'" onmouseout="this.style.background='transparent'">✎ Edit</button>
             <button onclick="deletePost('${p.id}')" style="font-size:11px;padding:4px 9px;border-radius:4px;border:0.5px solid #E2D0D0;background:transparent;cursor:pointer;color:#C0392B;font-family:'Source Sans 3',sans-serif;transition:all 0.15s" onmouseover="this.style.background='#FDF0F0'" onmouseout="this.style.background='transparent'">🗑 Delete</button>
           </div>
         </div>
@@ -1278,6 +1308,32 @@ function openNewPost(){
 function closeNewPost(){
   document.getElementById('new-post-modal').classList.remove('open');
   document.body.style.overflow = '';
+  editingPostId = null;
+  const h2 = document.querySelector('.new-post-form h2');
+  const pubBtn = document.querySelector('.btn-publish');
+  if(h2) h2.textContent = 'Write a new post';
+  if(pubBtn) pubBtn.textContent = 'Publish';
+}
+
+let editingPostId = null;
+
+function editPost(id){
+  const pwd = prompt('Enter password to edit this post:');
+  if(pwd !== 'haeam1004'){ if(pwd !== null) alert('Incorrect password.'); return; }
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  editingPostId = id;
+  document.getElementById('np-title').value = p.title || '';
+  document.getElementById('np-region').value = p.region || 'East Asia';
+  document.getElementById('np-author').value = p.author || 'Eugene Lee';
+  document.getElementById('np-tags').value = (p.tags||[]).join(', ');
+  document.getElementById('np-excerpt').value = p.excerpt || '';
+  document.getElementById('np-body').value = p.body || '';
+  document.getElementById('np-refs').value = (p.refs||[]).map(r=>r.title+'|'+r.url).join('\n');
+  // update modal title to show editing
+  document.querySelector('.new-post-form h2').textContent = 'Edit post';
+  document.querySelector('.btn-publish').textContent = 'Save changes';
+  document.getElementById('new-post-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 async function deletePost(id){
@@ -1318,22 +1374,36 @@ async function savePost(status){
     featured: false
   };
 
-  // show saving indicator
   const pubBtn = document.querySelector('.btn-publish');
-  const draftBtn = document.querySelector('.btn-draft');
   if(pubBtn) pubBtn.textContent = 'Saving…';
 
   try {
-    const saved = await insertPost(post);
-    const newPost = Array.isArray(saved) ? saved[0] : saved;
-    posts.unshift(newPost);
+    if(editingPostId){
+      // UPDATE existing post in Supabase
+      await sbFetch('posts?id=eq.' + editingPostId, {
+        method: 'PATCH',
+        prefer: 'return=representation',
+        body: JSON.stringify({title, region, author, tags, excerpt, body, refs, status})
+      });
+      // update local array
+      const idx = posts.findIndex(x=>x.id===editingPostId);
+      if(idx>-1) posts[idx] = {...posts[idx], title, region, author, tags, excerpt, body, refs, status};
+      editingPostId = null;
+    } else {
+      // INSERT new post
+      const saved = await insertPost(post);
+      const newPost = Array.isArray(saved) ? saved[0] : saved;
+      posts.unshift(newPost);
+    }
     ['np-title','np-tags','np-excerpt','np-body','np-refs'].forEach(id=>document.getElementById(id).value='');
+    // reset modal title
+    document.querySelector('.new-post-form h2').textContent = 'Write a new post';
+    document.querySelector('.btn-publish').textContent = 'Publish';
     closeNewPost();
     renderFeed();
-    if(status==='published' && newPost) openPost(newPost.id);
   } catch(e) {
-    alert('Could not save post. Check your connection and try again.\n\n' + e.message);
-    if(pubBtn) pubBtn.textContent = 'Publish';
+    alert('Could not save. Check your connection and try again.\n\n' + e.message);
+    if(pubBtn) pubBtn.textContent = editingPostId ? 'Save changes' : 'Publish';
   }
 }
 
