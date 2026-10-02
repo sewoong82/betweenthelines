@@ -1225,6 +1225,11 @@ function searchPosts(){
 
 // ── NEW POST ──────────────────────────────────────────────────────────
 function openNewPost(){
+  const pwd = prompt('Enter password to write a post:');
+  if(pwd !== 'haeam1004'){
+    if(pwd !== null) alert('Incorrect password.');
+    return;
+  }
   document.getElementById('new-post-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
