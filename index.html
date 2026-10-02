@@ -1189,6 +1189,7 @@ function renderFeed(){
           <div class="post-actions">
             ${(p.refs||[]).length ? `<button class="ref-toggle" onclick="toggleRefs('${p.id}')">📎 Sources (${p.refs.length})</button>` : ''}
             <button class="read-more" onclick="openPost('${p.id}')">Read more →</button>
+            <button onclick="deletePost('${p.id}')" style="font-size:11px;padding:4px 9px;border-radius:4px;border:0.5px solid #E2D0D0;background:transparent;cursor:pointer;color:#C0392B;font-family:'Source Sans 3',sans-serif;transition:all 0.15s" onmouseover="this.style.background='#FDF0F0'" onmouseout="this.style.background='transparent'">🗑 Delete</button>
           </div>
         </div>
       </div>
@@ -1277,6 +1278,21 @@ function openNewPost(){
 function closeNewPost(){
   document.getElementById('new-post-modal').classList.remove('open');
   document.body.style.overflow = '';
+}
+
+async function deletePost(id){
+  const pwd = prompt('Enter password to delete this post:');
+  if(pwd !== 'haeam1004'){ if(pwd !== null) alert('Incorrect password.'); return; }
+  if(!confirm('Are you sure you want to delete this post? This cannot be undone.')) return;
+  try {
+    await deletePostDb(id);
+    posts = posts.filter(p => p.id !== id);
+    renderFeed();
+  } catch(e){
+    // if it's a sample post with non-uuid id, just remove from local array
+    posts = posts.filter(p => p.id !== id);
+    renderFeed();
+  }
 }
 
 async function savePost(status){
