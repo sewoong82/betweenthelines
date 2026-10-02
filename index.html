@@ -809,18 +809,17 @@ const WOD_KEY     = 'btl_wod_v1';
 const SAMPLE_POSTS = [
   {
     id: 'p1',
-    title: 'Trump\'s Unilateral Announcement Playbook: What the Korea Deal Reveals',
+    title: 'The New Geopolitics of the Korean Peninsula',
     region: 'Korea',
-    author: 'Eugene',
-    date: '2026-10-01',
-    tags: ['Korea', 'diplomacy', 'economics', 'US-ROK alliance'],
-    excerpt: '',
-    body: `Trump announced Wednesday that South Korea is committing $200 billion to US energy projects: eight nuclear reactors, a Texas gas plant, and a major Alaska LNG pipeline. He called it the biggest energy infrastructure investment in American history. Within a day, Seoul was publicly clarifying that the Alaska piece isn't finalized.
-
-What's confirmed versus contested. The $22.3 billion Texas gas plant and the $120 billion nuclear program have signed agreements behind them, including Westinghouse and two Korean state utilities. The Alaska LNG figure, $50-54 billion depending on the source, is where the two governments diverge: Trump presented it as agreed, Korean officials say no specific amount is committed and the project remains subject to undefined "commercial reasonableness" language.
-
-This is not a one-off, and the evidence for that claim is specific, not asserted. The same structure played out with Japan twice this year. In February, Trump announced Japan's "first tranche" of its $550 billion commitment, three projects worth $36 billion, one day before Japan's own trade minister had said in Washington that "an agreement wasn't reached" and points still needed coordination. In September, the White House touted $490 billion in projects as evidence the deal was "already delivering results"; Japan's own disclosure characterized the same projects as companies having merely "expressed interest," with no binding contracts signed. CBC's reporting on the original July 2025 Japan deal names this explicitly as a pattern: Trump announces on social media immediately after a meeting, before the counterparty issues its own statement, with key operational details absent. Korea's Alaska rollout fits this template exactly, same sequencing, same gap between US framing and partner confirmation, same absence of binding specifics at announcement time.`,
+    author: 'Sewoong',
+    date: '2026-09-24',
+    tags: ['Korea', 'diplomacy', 'North Korea', 'US-ROK alliance'],
+    excerpt: 'Seventy years after the armistice, the Korean Peninsula remains one of the most militarized and diplomatically complex zones on earth. Recent shifts in U.S. foreign policy posture are forcing Seoul to recalibrate its alliances in ways that would have seemed unthinkable a decade ago.',
+    body: `Seventy years after the armistice, the Korean Peninsula remains one of the most militarized and diplomatically complex zones on earth. Recent shifts in U.S. foreign policy posture are forcing Seoul to recalibrate its alliances in ways that would have seemed unthinkable a decade ago.\n\nSouth Korea now finds itself navigating simultaneously the demands of its security alliance with the United States, its deep economic interdependence with China, and the persistent threat posed by the North. The triangular pressure is not new — but its intensity has sharpened considerably since 2024.\n\nWhat has changed is the credibility gap. South Korean policymakers increasingly wonder whether the American extended deterrent is as reliable as it once appeared. The domestic politics of the United States — its inward turn, its skepticism of multilateral commitments — have opened space for South Korean voices to advocate for an independent nuclear deterrent. That conversation, once confined to fringe nationalist circles, now reaches the floors of the National Assembly.\n\nNone of this means the alliance is broken. But it does mean the alliance is being renegotiated, quietly and in real time, in ways that will shape the security architecture of Northeast Asia for a generation.`,
     refs: [
+      {title: 'Council on Foreign Relations — Korea Policy', url: 'https://www.cfr.org/korea'},
+      {title: 'The Diplomat — Korean Peninsula Coverage', url: 'https://thediplomat.com/category/korean-peninsula/'},
+      {title: '38 North — DPRK Analysis', url: 'https://www.38north.org'}
     ],
     status: 'published',
     featured: true
@@ -1003,12 +1002,55 @@ function closeAuthors(){
 function closeAuthorsOverlay(e){
   if(e.target.id==='authors-overlay') closeAuthors();
 }
-let posts = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
-if(!posts){
-  posts = SAMPLE_POSTS;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+// ── SUPABASE CONFIG ───────────────────────────────────────────────────
+const SUPABASE_URL = 'https://ejgtrgfpemwotstcepyg.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Iq2IX4-qKotBSsoLSXY40A_Ef9OPAh3';
+
+async function sbFetch(path, options={}){
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || 'return=representation',
+      ...options.headers
+    },
+    ...options
+  });
+  if(!res.ok){
+    const err = await res.text();
+    throw new Error(err);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
 }
 
+async function loadPosts(){
+  try {
+    const data = await sbFetch("posts?select=*&status=eq.published&order=date.desc,created_at.desc");
+    return data;
+  } catch(e){
+    console.warn('Supabase load failed, using samples:', e);
+    return SAMPLE_POSTS;
+  }
+}
+
+async function insertPost(post){
+  return await sbFetch('posts', {
+    method: 'POST',
+    prefer: 'return=representation',
+    body: JSON.stringify(post)
+  });
+}
+
+async function deletePostDb(id){
+  await sbFetch('posts?id=eq.' + id, {
+    method: 'DELETE',
+    prefer: 'return=minimal'
+  });
+}
+
+let posts = [];
 let currentFilter = 'all';
 let currentSearch = '';
 
@@ -1022,6 +1064,29 @@ const dayOfYear = Math.floor((now - new Date(now.getFullYear(),0,0)) / 86400000)
 
 // sentence of the week
 renderSotw();
+
+// show loading state then fetch posts
+document.getElementById('post-feed').innerHTML = '<div style="text-align:center;padding:48px;color:var(--slate-light);font-size:14px">Loading posts…</div>';
+loadPosts().then(async data => {
+  if(data.length === 0){
+    // seed sample posts into Supabase on first load
+    try {
+      for(const p of SAMPLE_POSTS){
+        const {id, ...rest} = p; // remove local id, let Supabase generate uuid
+        await insertPost(rest);
+      }
+      posts = await loadPosts();
+    } catch(e) {
+      posts = SAMPLE_POSTS;
+    }
+  } else {
+    posts = data;
+  }
+  renderFeed();
+}).catch(()=>{
+  posts = SAMPLE_POSTS;
+  renderFeed();
+});
 
 // ── RENDER ────────────────────────────────────────────────────────────
 function regionClass(r){
@@ -1168,7 +1233,7 @@ function closeNewPost(){
   document.body.style.overflow = '';
 }
 
-function savePost(status){
+async function savePost(status){
   const title   = document.getElementById('np-title').value.trim();
   const region  = document.getElementById('np-region').value;
   const author  = document.getElementById('np-author').value;
@@ -1180,26 +1245,34 @@ function savePost(status){
   if(!title || !excerpt){ alert('Please add a title and summary.'); return; }
 
   const refs = refsRaw.split('\n').map(line=>{
-    const parts = line.split('|'); 
+    const parts = line.split('|');
     return parts.length>=2 ? {title:parts[0].trim(), url:parts[1].trim()} : null;
   }).filter(Boolean);
 
   const post = {
-    id: 'p' + Date.now(),
     title, region, author, tags, excerpt, body,
     refs, status,
     date: new Date().toISOString().slice(0,10),
     featured: false
   };
 
-  posts.unshift(post);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+  // show saving indicator
+  const pubBtn = document.querySelector('.btn-publish');
+  const draftBtn = document.querySelector('.btn-draft');
+  if(pubBtn) pubBtn.textContent = 'Saving…';
 
-  ['np-title','np-tags','np-excerpt','np-body','np-refs'].forEach(id=>document.getElementById(id).value='');
-  closeNewPost();
-  renderFeed();
-
-  if(status==='published') openPost(post.id);
+  try {
+    const saved = await insertPost(post);
+    const newPost = Array.isArray(saved) ? saved[0] : saved;
+    posts.unshift(newPost);
+    ['np-title','np-tags','np-excerpt','np-body','np-refs'].forEach(id=>document.getElementById(id).value='');
+    closeNewPost();
+    renderFeed();
+    if(status==='published' && newPost) openPost(newPost.id);
+  } catch(e) {
+    alert('Could not save post. Check your connection and try again.\n\n' + e.message);
+    if(pubBtn) pubBtn.textContent = 'Publish';
+  }
 }
 
 // close modals on escape
