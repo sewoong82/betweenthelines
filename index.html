@@ -703,10 +703,9 @@ body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3
     <div class="sidebar-section">
       <div class="sidebar-head">About</div>
       <div class="about-box">
-        <p>A father-and-son blog tracking political developments across the United States and East Asia — from Seoul to Washington, Beijing to Brussels.</p>
+        <p>A blog tracking political developments across the United States and East Asia — from Seoul to Washington, Beijing to Brussels.</p>
         <div class="about-authors">
-          <span class="author-chip">Sewoong</span>
-          <span class="author-chip">Your Son</span>
+          <span class="author-chip">Eugene Lee</span>
         </div>
       </div>
     </div>
@@ -756,8 +755,8 @@ body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3
     <div class="form-field">
       <label>Author</label>
       <select id="np-author">
-        <option value="Sewoong">Sewoong</option>
-        <option value="Your Son">Your Son</option>
+        <option value="Eugene Lee">Eugene Lee</option>
+        
       </select>
     </div>
     <div class="form-field">
@@ -798,7 +797,7 @@ body { background: var(--cream); color: var(--navy); font-family: 'Source Sans 3
 
 <!-- FOOTER -->
 <footer class="site-footer">
-  <strong>Between the Lines</strong> · Global Politics &amp; East Asia · Private blog by Sewoong &amp; family · <span id="footer-year"></span>
+  <strong>Between the Lines</strong> · Global Politics &amp; East Asia · Between the Lines Blog · <span id="footer-year"></span>
 </footer>
 
 <script>
@@ -811,7 +810,7 @@ const SAMPLE_POSTS = [
     id: 'p1',
     title: 'The New Geopolitics of the Korean Peninsula',
     region: 'Korea',
-    author: 'Sewoong',
+    author: 'Eugene Lee',
     date: '2026-09-24',
     tags: ['Korea', 'diplomacy', 'North Korea', 'US-ROK alliance'],
     excerpt: 'Seventy years after the armistice, the Korean Peninsula remains one of the most militarized and diplomatically complex zones on earth. Recent shifts in U.S. foreign policy posture are forcing Seoul to recalibrate its alliances in ways that would have seemed unthinkable a decade ago.',
@@ -828,7 +827,7 @@ const SAMPLE_POSTS = [
     id: 'p2',
     title: 'America First, Asia Second? What Trump\'s Return Means for the Pacific',
     region: 'USA',
-    author: 'Sewoong',
+    author: 'Eugene Lee',
     date: '2026-09-23',
     tags: ['USA', 'foreign policy', 'Asia-Pacific', 'alliances'],
     excerpt: 'The return of transactional foreign policy thinking to Washington is reshaping how Asian allies calculate their strategic futures. From Tokyo to Manila, governments that once assumed American commitment is asking harder questions.',
@@ -844,7 +843,7 @@ const SAMPLE_POSTS = [
     id: 'p3',
     title: 'China\'s Economic Slowdown and What It Means for Regional Power',
     region: 'China',
-    author: 'Sewoong',
+    author: 'Eugene Lee',
     date: '2026-09-22',
     tags: ['China', 'economy', 'Xi Jinping', 'regional power'],
     excerpt: 'For three decades, China\'s economic growth was the central fact of Asian geopolitics. Now, as that growth slows and structural challenges mount, the political implications are beginning to ripple outward — from domestic legitimacy to regional assertiveness.',
@@ -931,21 +930,8 @@ const AUTHORS_KEY = 'btl_authors_v1';
 const DEFAULT_AUTHORS = [
   {
     id: 'a1',
-    name: 'Se Woong Lee',
-    initials: 'SL',
-    role: 'Co-founder · Education Policy & Politics',
-    bio: 'Associate Professor of Education Policy and Leadership at SMU\'s Simmons School of Education. Researcher, policy analyst, and lifelong observer of the intersections between politics, power, and public institutions — in the United States and across East Asia.',
-    focus: ['East Asia', 'U.S. Politics', 'Education Policy', 'Korea'],
-    links: [
-      {label: 'Faculty Page', url: 'https://www.smu.edu/simmons'},
-      {label: 'LinkedIn', url: 'https://linkedin.com'},
-    ],
-    photo: null
-  },
-  {
-    id: 'a2',
-    name: 'Your Son',
-    initials: 'YS',
+    name: 'Eugene Lee',
+    initials: 'EL',
     role: 'Co-founder · International Affairs',
     bio: 'Political science graduate and aspiring diplomat with a focus on U.S. foreign policy and East Asian geopolitics. Bringing a next-generation lens to the political questions that will define the coming decades.',
     focus: ['Foreign Policy', 'Diplomacy', 'East Asia', 'U.S. Politics'],
@@ -973,18 +959,48 @@ function openAuthors(){
     const linksHtml = (a.links||[]).map(l =>
       `<a class="author-link" href="${l.url}" target="_blank" rel="noopener">↗ ${l.label}</a>`
     ).join('');
-    return `<div class="author-card">
-      <div class="author-avatar">
-        ${avatarHtml}
-      </div>
+    return `<div class="author-card" id="author-card-${a.id}">
+      <div class="author-avatar">${avatarHtml}</div>
       <div class="author-info">
-        <div class="author-name">${a.name}</div>
-        <div class="author-role">${a.role}</div>
-        <div class="author-bio">${a.bio}</div>
-        <div class="author-focus">${(a.focus||[]).map(f=>`<span class="focus-tag">${f}</span>`).join('')}</div>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between">
+          <div>
+            <div class="author-name">${a.name}</div>
+            <div class="author-role">${a.role}</div>
+          </div>
+          <button onclick="editAuthor('${a.id}')" style="font-size:11px;padding:4px 10px;border-radius:4px;border:0.5px solid var(--cream-dark);background:transparent;cursor:pointer;color:var(--slate);font-family:'Source Sans 3',sans-serif;margin-top:4px">✎ Edit</button>
+        </div>
+        <div class="author-bio" id="author-bio-${a.id}">${a.bio}</div>
+        <div class="author-focus" id="author-focus-${a.id}">${(a.focus||[]).map(f=>`<span class="focus-tag">${f}</span>`).join('')}</div>
         <div class="author-links">
           ${linksHtml}
           <span class="author-post-count">${count} post${count!==1?'s':''}</span>
+        </div>
+        <!-- inline edit form, hidden by default -->
+        <div id="author-edit-${a.id}" style="display:none;margin-top:14px;padding:14px;background:var(--cream);border-radius:8px;border:0.5px solid var(--cream-dark)">
+          <div class="form-field" style="margin-bottom:8px">
+            <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Name</label>
+            <input id="ae-name-${a.id}" type="text" value="${a.name}" style="width:100%;font-size:13px;border-radius:6px;border:0.5px solid #D0CEC9;padding:6px 9px;font-family:'Source Sans 3',sans-serif">
+          </div>
+          <div class="form-field" style="margin-bottom:8px">
+            <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Role</label>
+            <input id="ae-role-${a.id}" type="text" value="${a.role}" style="width:100%;font-size:13px;border-radius:6px;border:0.5px solid #D0CEC9;padding:6px 9px;font-family:'Source Sans 3',sans-serif">
+          </div>
+          <div class="form-field" style="margin-bottom:8px">
+            <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Bio</label>
+            <textarea id="ae-bio-${a.id}" style="width:100%;font-size:13px;border-radius:6px;border:0.5px solid #D0CEC9;padding:6px 9px;font-family:'Source Sans 3',sans-serif;min-height:80px;resize:vertical">${a.bio}</textarea>
+          </div>
+          <div class="form-field" style="margin-bottom:8px">
+            <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">Focus areas (comma separated)</label>
+            <input id="ae-focus-${a.id}" type="text" value="${(a.focus||[]).join(', ')}" style="width:100%;font-size:13px;border-radius:6px;border:0.5px solid #D0CEC9;padding:6px 9px;font-family:'Source Sans 3',sans-serif">
+          </div>
+          <div class="form-field" style="margin-bottom:10px">
+            <label style="font-size:11px;font-weight:600;color:var(--slate);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px">LinkedIn URL</label>
+            <input id="ae-linkedin-${a.id}" type="text" value="${(a.links||[]).find(l=>l.label==='LinkedIn')?.url||''}" placeholder="https://linkedin.com/in/..." style="width:100%;font-size:13px;border-radius:6px;border:0.5px solid #D0CEC9;padding:6px 9px;font-family:'Source Sans 3',sans-serif">
+          </div>
+          <div style="display:flex;gap:8px">
+            <button onclick="saveAuthor('${a.id}')" style="padding:6px 14px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Source Sans 3',sans-serif">Save</button>
+            <button onclick="cancelEditAuthor('${a.id}')" style="padding:6px 14px;background:transparent;border:0.5px solid var(--cream-dark);border-radius:6px;font-size:12px;cursor:pointer;font-family:'Source Sans 3',sans-serif;color:var(--slate)">Cancel</button>
+          </div>
         </div>
       </div>
     </div>`;
@@ -992,6 +1008,31 @@ function openAuthors(){
 
   document.getElementById('authors-overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
+}
+
+function editAuthor(id){
+  const pwd = prompt('Enter password to edit:');
+  if(pwd !== 'haeam1004'){ if(pwd !== null) alert('Incorrect password.'); return; }
+  document.getElementById('author-edit-'+id).style.display = 'block';
+}
+
+function cancelEditAuthor(id){
+  document.getElementById('author-edit-'+id).style.display = 'none';
+}
+
+function saveAuthor(id){
+  const authors = loadAuthors();
+  const a = authors.find(x=>x.id===id); if(!a) return;
+  a.name    = document.getElementById('ae-name-'+id).value.trim() || a.name;
+  a.role    = document.getElementById('ae-role-'+id).value.trim() || a.role;
+  a.bio     = document.getElementById('ae-bio-'+id).value.trim() || a.bio;
+  a.focus   = document.getElementById('ae-focus-'+id).value.split(',').map(f=>f.trim()).filter(Boolean);
+  const linkedin = document.getElementById('ae-linkedin-'+id).value.trim();
+  a.links   = linkedin ? [{label:'LinkedIn', url: linkedin}] : [];
+  a.initials = a.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+  localStorage.setItem(AUTHORS_KEY, JSON.stringify(authors));
+  closeAuthors();
+  setTimeout(openAuthors, 100);
 }
 
 function closeAuthors(){
