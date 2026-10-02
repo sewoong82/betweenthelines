@@ -517,8 +517,10 @@ body {
   z-index: 1000;
   overflow-y: auto;
   padding: 40px 20px;
+  align-items: flex-start;
+  justify-content: center;
 }
-.post-overlay.open { display: flex; justify-content: center; }
+.post-overlay.open { display: flex; }
 .post-full {
   background: var(--white);
   border-radius: 10px;
@@ -526,6 +528,10 @@ body {
   width: 100%;
   padding: 48px;
   position: relative;
+  margin: 0 auto 40px;
+  /* ensure it grows with content and never clips */
+  overflow: visible;
+  box-sizing: border-box;
 }
 .post-close {
   position: absolute;
@@ -548,7 +554,9 @@ body {
   font-size: 16px;
   color: var(--slate);
   line-height: 1.8;
-  max-width: 62ch;
+  max-width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 .post-full-body p { margin-bottom: 18px; }
 .post-full-refs {
@@ -1289,14 +1297,16 @@ function openPost(id){
     <div class="post-full-title">${p.title}</div>
     <div class="post-full-body">${p.body.split('\n\n').map(para=>`<p>${para}</p>`).join('')}</div>
     ${refsHtml}`;
-  document.getElementById('post-overlay').classList.add('open');
+  const overlay = document.getElementById('post-overlay');
+  overlay.classList.add('open');
+  overlay.scrollTop = 0;
   document.body.style.overflow = 'hidden';
 }
 
 function closeOverlay(e){
   if(e.target.id==='post-overlay'){
     document.getElementById('post-overlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.style.overflow = 'scroll';
   }
 }
 
@@ -1433,7 +1443,7 @@ document.addEventListener('keydown', e=>{
     document.getElementById('post-overlay').classList.remove('open');
     document.getElementById('new-post-modal').classList.remove('open');
     document.getElementById('authors-overlay').classList.remove('open');
-    document.body.style.overflow = '';
+    document.body.style.overflow = 'scroll';
   }
 });
 
